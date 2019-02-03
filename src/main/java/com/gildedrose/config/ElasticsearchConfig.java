@@ -1,8 +1,9 @@
 package com.gildedrose.config;
 
 import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,37 +11,36 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.gildedrose.repository")
 public class ElasticsearchConfig {
 
-        @Value("${elasticsearch.host}")
-        private String EsHost;
+    @Value("${elasticsearch.host}")
+    private String EsHost;
 
-        @Value("${elasticsearch.clustername}")
-        private String EsClusterName;
+    @Value("${elasticsearch.port}")
+    private int EsPort;
 
-        @Bean
-        public Client client() throws Exception {
+    @Value("${elasticsearch.clustername}")
+    private String EsClusterName;
 
-            Settings esSettings = Settings.builder()
-                    .put("cluster.name", EsClusterName)
-                    .put("path.home", EsHost)
-                    .build();
+    @Bean
+    public Client client() throws Exception {
 
-            //https://www.elastic.co/guide/en/elasticsearch/guide/current/_transport_client_versus_node_client.html
-            return TransportClient.builder()
-                    .settings(esSettings)
-                    .build()
-                    .addTransportAddress(
-                            new InetSocketTransportAddress(InetAddress.getByName(EsHost), EsPort));
-        }
+        Settings esSettings = Settings.builder()
+                .put("cluster.name", EsClusterName)
+                .build();
 
-        @Bean
-        public ElasticsearchOperations elasticsearchTemplate() throws Exception {
-            return new ElasticsearchTemplate(client());
-        }
+        return new PreBuiltTransportClient(esSettings)
+                .addTransportAddress(new TransportAddress(new InetSocketAddress(EsHost, EsPort)));
+
+    }
+
+    @Bean
+    public ElasticsearchOperations elasticsearchTemplate() throws Exception {
+        return new ElasticsearchTemplate(client());
+    }
 
 }

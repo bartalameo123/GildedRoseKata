@@ -1,18 +1,23 @@
 package com.gildedrose.service;
 
+import com.gildedrose.entity.Item;
 import com.gildedrose.repository.ItemRepository;
+import com.gildedrose.usecase.Quality;
+import com.gildedrose.usecase.SellTime;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class ItemService {
+public interface ItemService {
 
-    private final ItemRepository itemRepository;
+    void updateItems(List<Item> items);
 
-    public ItemService(ItemRepository itemRepository){
-        this.itemRepository = itemRepository;
-    }
+    void save(Item item);
 
-    public void updateItems(){
+    void delete(Item item);
 
-    }
+    Item findByName(String name);
+
+    List<Item> findAll();
 }
