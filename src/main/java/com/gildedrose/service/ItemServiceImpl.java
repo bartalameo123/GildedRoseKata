@@ -6,12 +6,14 @@ import com.gildedrose.service.exceptions.ItemNotFoundException;
 import com.gildedrose.usecase.Quality;
 import com.gildedrose.usecase.SellTime;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.gildedrose.service.exceptions.ItemNotFoundException.ITEM_NOT_FOUND;
 
 @Slf4j
+@Service
 public class ItemServiceImpl implements ItemService{
 
     private final ItemRepository itemRepository;
