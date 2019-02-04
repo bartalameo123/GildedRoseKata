@@ -1,43 +1,29 @@
-package com.gildedrose;
-
-import com.gildedrose.entity.BackStageItem;
-import com.gildedrose.entity.GeneralItem;
-import com.gildedrose.entity.Item;
+package com.gildedrose.entity;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.gildedrose.entity.BackStageItem.gettQualifiedItem;
-
-class GildedRose {
-    Item[] items;
+public class GeneralItem extends Item {
 
     private final static int MAX_QUALITY = 50;
     private final static int MIN_QUALITY = 0;
 
-    public GildedRose(Item[] items) {
-        this.items = items;
+    private Item item;
+
+    public GeneralItem(Item item) {
+        super(item.name, item.sellIn, item.quality);
     }
 
     public void updateQuality() {
 
-    /*    Arrays.asList(items).stream().map(tmp -> {GeneralItem generalItem = new GeneralItem(tmp); return generalItem;})
-                .forEach(generalItem -> generalItem.updateQuality())
-        ;*/
+        if (!item.name.equals("Sulfuras, Hand of Ragnaros")) { //do not apply to sulfuras
 
-        for (Item item:items) {
-            if (isSulfurItem(item)) { //do not apply to sulfuras
-                continue;
-            }
-            if (isAgedBrieItem(item)
-                    || isBackstageItem(item)) {
+            if (item.name.equals("Aged Brie") || item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+
                 if (itemQualityIsNotMaximal(item.quality)) {  //max quality is 50
                     increaseQuality(item);  //increae for brie and passes
 
-                    if (isBackstageItem(item)) {
-                        gettQualifiedItem(item).updateQuality();
-
+                    if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                        getQualifiedItem(item).updateQuality();
                         if (backstageQualityDoubles(item.sellIn)) {
                             if (itemQualityIsNotMaximal(item.quality)) {
                                 increaseQuality(item); //+2 if <=10 days
@@ -58,11 +44,11 @@ class GildedRose {
             decreaseSellTime(item);
 
             if (sellDayHasPassed(item.sellIn)) { //if sell day passed quality degrades twice as fast
-                if (isAgedBrieItem(item)) {
+                if (item.name.equals("Aged Brie")) {
                     if (itemQualityIsNotMaximal(item.quality)) { //aged brie increases in quality
                         increaseQuality(item);
                     }
-                } else if (isBackstageItem(item)) {
+                } else if (item.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                     item.quality = 0; //backstage quality is zero
                 } else {
                     if (itemQualityIsNotMinimal(item.quality)) { //never negative
@@ -71,62 +57,45 @@ class GildedRose {
                 }
             }
         }
-
     }
 
-    private boolean backstageQualityDoubles(int sellIn){
+
+    private boolean backstageQualityDoubles(int sellIn) {
         return sellIn < 11;
     }
 
-    public boolean itemQualityIsNotMaximal(int quality){
+    public boolean itemQualityIsNotMaximal(int quality) {
         return quality < MAX_QUALITY;
     }
 
-    private boolean itemQualityIsNotMinimal(int quality){
+    private boolean itemQualityIsNotMinimal(int quality) {
         return quality > MIN_QUALITY;
     }
 
-    private boolean sellDayHasPassed(int sellIn){
+    private boolean sellDayHasPassed(int sellIn) {
         return sellIn < 0;
     }
 
-    private boolean backstageQualityTriples(int sellIn){
+    private boolean backstageQualityTriples(int sellIn) {
         return sellIn < 6;
     }
 
-    private void decreseQuality(Item item){
+    private void decreseQuality(Item item) {
         item.quality--;
     }
 
-    private void increaseQuality(Item item){
+    private void increaseQuality(Item item) {
         item.quality++;
     }
 
-    private void decreaseSellTime(Item item){
+    private void decreaseSellTime(Item item) {
         item.sellIn--;
     }
 
-    private BackStageItem getQualifiedItem(Item item){
-        if(item.name=="Backstage passes to a TAFKAL80ETC concert"){
+    private BackStageItem getQualifiedItem(Item item) {
+        if (item.name == "Backstage passes to a TAFKAL80ETC concert") {
             return new BackStageItem(item);
         }
         return null;
     }
-
-    private boolean isBackstageItem(Item item){
-         return item.name == "Backstage passes to a TAFKAL80ETC concert";
-    }
-
-    private boolean isSulfurItem(Item item){
-        return item.name == "Sulfuras, Hand of Ragnaros";
-    }
-
-    private boolean isAgedBrieItem(Item item){
-        return item.name == "Aged Brie";
-    }
-
-    private boolean isStandardItem(Item item){
-        return item.name == "Aged Brie";
-    }
-
 }
