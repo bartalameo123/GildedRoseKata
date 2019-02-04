@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import static com.gildedrose.entity.BackStageItem.gettQualifiedItem;
 
-class GildedRose {
+public class GildedRose {
     Item[] items;
 
     private final static int MAX_QUALITY = 50;
@@ -27,42 +27,54 @@ class GildedRose {
         ;*/
 
         for (Item item : items) {
-            if (isSulfurItem(item)) { //do not apply to sulfuras
+            if (isSulfurItem(item)) {
                 continue;
             }
             if (isAgedBrieItem(item)) {
-                increaseQuality(item);
-                decreaseSellTime(item);
-                if (sellDayHasPassed(item.sellIn)) {
-                    increaseQuality(item);
-                }
+                updateAgedBrieQuality(item);
                 continue;
             }
             if (isBackstageItem(item)) {
-                increaseQuality(item);  //increae for brie and passes
-                if (backstageQualityDoubles(item.sellIn)) {
-                    increaseQuality(item); //+2 if <=10 days
-                }
-
-                if (backstageQualityTriples(item.sellIn)) { //+3 if less than 6 days
-                    increaseQuality(item);
-                }
-                decreaseSellTime(item);
-                if (sellDayHasPassed(item.sellIn)) {
-                    item.quality = 0; //backstage quality is zero
-                }
+                updateBackstageQuality(item);
                 continue;
             }
 
-            decreseQuality(item);
-
-            decreaseSellTime(item);
-
-            if (sellDayHasPassed(item.sellIn)) { //if sell day passed quality degrades twice as fast
-                decreseQuality(item); //second decrease, as decreses twice as fast
-            }
+            updateStandardQuality(item);
         }
 
+    }
+
+    private void updateStandardQuality(Item item) {
+        decreseQuality(item);
+
+        decreaseSellTime(item);
+
+        if (sellDayHasPassed(item.sellIn)) { //if sell day passed quality degrades twice as fast
+            decreseQuality(item); //second decrease, as decreses twice as fast
+        }
+    }
+
+    private void updateBackstageQuality(Item item) {
+        increaseQuality(item);
+        if (backstageQualityDoubles(item.sellIn)) {
+            increaseQuality(item);
+        }
+
+        if (backstageQualityTriples(item.sellIn)) {
+            increaseQuality(item);
+        }
+        decreaseSellTime(item);
+        if (sellDayHasPassed(item.sellIn)) {
+            item.quality = 0;
+        }
+    }
+
+    private void updateAgedBrieQuality(Item item) {
+        increaseQuality(item);
+        decreaseSellTime(item);
+        if (sellDayHasPassed(item.sellIn)) {
+            increaseQuality(item);
+        }
     }
 
     private boolean backstageQualityDoubles(int sellIn){

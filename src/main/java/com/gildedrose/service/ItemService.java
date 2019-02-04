@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public interface ItemService {
 
-    void updateItems(List<Item> items);
+    void updateItems();
 
     void save(Item item);
 

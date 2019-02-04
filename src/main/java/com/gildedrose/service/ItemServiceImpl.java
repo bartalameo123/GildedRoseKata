@@ -1,5 +1,6 @@
 package com.gildedrose.service;
 
+import com.gildedrose.GildedRose;
 import com.gildedrose.entity.Item;
 import com.gildedrose.repository.ItemRepository;
 import com.gildedrose.service.exceptions.ItemNotFoundException;
@@ -30,8 +31,10 @@ public class ItemServiceImpl implements ItemService{
         this.sellTime = sellTime;
     }
 
-    public void updateItems(List<Item> items) {
-
+    public void updateItems() {
+        List<Item> items = itemRepository.findAll();
+        GildedRose app = new GildedRose(items.toArray(new Item[items.size()]));
+        app.updateQuality();
     }
 
     public void save(Item item) {

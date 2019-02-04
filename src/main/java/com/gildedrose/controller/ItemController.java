@@ -5,6 +5,7 @@ import com.gildedrose.service.ItemService;
 import com.gildedrose.service.ItemServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,4 +36,10 @@ public class ItemController {
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @Scheduled(cron = "0 0 23 * * ?")
+    public void updateQuality() {
+        itemServiceImpl.updateItems();
+    }
+
 }
