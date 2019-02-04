@@ -26,49 +26,40 @@ class GildedRose {
                 .forEach(generalItem -> generalItem.updateQuality())
         ;*/
 
-        for (Item item:items) {
+        for (Item item : items) {
             if (isSulfurItem(item)) { //do not apply to sulfuras
                 continue;
             }
-            if (isAgedBrieItem(item)
-                    || isBackstageItem(item)) {
-                if (itemQualityIsNotMaximal(item.quality)) {  //max quality is 50
-                    increaseQuality(item);  //increae for brie and passes
-
-                    if (isBackstageItem(item)) {
-                        gettQualifiedItem(item).updateQuality();
-
-                        if (backstageQualityDoubles(item.sellIn)) {
-                            if (itemQualityIsNotMaximal(item.quality)) {
-                                increaseQuality(item); //+2 if <=10 days
-                            }
-                        }
-
-                        if (backstageQualityTriples(item.sellIn)) { //+3 if less than 6 days
-                            if (itemQualityIsNotMaximal(item.quality)) {
-                                increaseQuality(item);
-                            }
-                        }
-                    }
+            if (isAgedBrieItem(item)) {
+                increaseQuality(item);
+                decreaseSellTime(item);
+                if (sellDayHasPassed(item.sellIn)) {
+                    increaseQuality(item);
                 }
-            } else if (itemQualityIsNotMinimal(item.quality)) {
-                decreseQuality(item);
+                continue;
             }
+            if (isBackstageItem(item)) {
+                increaseQuality(item);  //increae for brie and passes
+                if (backstageQualityDoubles(item.sellIn)) {
+                    increaseQuality(item); //+2 if <=10 days
+                }
+
+                if (backstageQualityTriples(item.sellIn)) { //+3 if less than 6 days
+                    increaseQuality(item);
+                }
+                decreaseSellTime(item);
+                if (sellDayHasPassed(item.sellIn)) {
+                    item.quality = 0; //backstage quality is zero
+                }
+                continue;
+            }
+
+            decreseQuality(item);
 
             decreaseSellTime(item);
 
             if (sellDayHasPassed(item.sellIn)) { //if sell day passed quality degrades twice as fast
-                if (isAgedBrieItem(item)) {
-                    if (itemQualityIsNotMaximal(item.quality)) { //aged brie increases in quality
-                        increaseQuality(item);
-                    }
-                } else if (isBackstageItem(item)) {
-                    item.quality = 0; //backstage quality is zero
-                } else {
-                    if (itemQualityIsNotMinimal(item.quality)) { //never negative
-                        decreseQuality(item); //second decrease, as decreses twice as fast
-                    }
-                }
+                decreseQuality(item); //second decrease, as decreses twice as fast
             }
         }
 
@@ -95,11 +86,13 @@ class GildedRose {
     }
 
     private void decreseQuality(Item item){
-        item.quality--;
+        if (itemQualityIsNotMinimal(item.quality))
+            item.quality--;
     }
 
     private void increaseQuality(Item item){
-        item.quality++;
+        if (itemQualityIsNotMaximal(item.quality))
+            item.quality++;
     }
 
     private void decreaseSellTime(Item item){
