@@ -3,6 +3,9 @@ buildscript {
         springBootVersion = "2.1.0.RELEASE"
     }
     repositories {
+        maven {
+            url 'http://maven.int.bite.lt:8081/artifactory/plugins-release'
+        }
         mavenCentral()
     }
     dependencies {
@@ -21,6 +24,9 @@ sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
 
 repositories {
+    maven {
+        url 'http://maven.int.bite.lt:8081/artifactory/libs-release'
+    }
     mavenCentral()
 }
 
