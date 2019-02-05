@@ -2,9 +2,6 @@ package com.gildedrose.entity;
 
 public class StandardItem implements GeneralItem{
 
-    public static final int MIN_QUALITY = 0;
-    public static final int MAX_QUALITY = 50;
-
     private Item item;
 
     public StandardItem(Item item) {
@@ -22,7 +19,7 @@ public class StandardItem implements GeneralItem{
     }
 
     private boolean itemQualityIsNotMinimal(int quality){
-        return quality > MIN_QUALITY;
+        return quality > GeneralItem.MIN_QUALITY;
     }
 
     private boolean sellDayHasPassed(int sellIn){

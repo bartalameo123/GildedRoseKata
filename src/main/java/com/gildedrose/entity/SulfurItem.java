@@ -1,6 +1,6 @@
 package com.gildedrose.entity;
 
-public class SulfurItem {
+public class SulfurItem implements GeneralItem{
 
     private Item item;
 

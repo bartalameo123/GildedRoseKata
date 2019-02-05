@@ -2,8 +2,6 @@ package com.gildedrose.entity;
 
 public class AgedBrieItem implements GeneralItem{
 
-    public static final int MAX_QUALITY = 50;
-
     private Item item;
 
     public AgedBrieItem(Item item){
@@ -19,7 +17,7 @@ public class AgedBrieItem implements GeneralItem{
     }
 
     public boolean itemQualityIsNotMaximal(int quality){
-        return quality < MAX_QUALITY;
+        return quality < GeneralItem.MAX_QUALITY;
     }
 
     private boolean sellDayHasPassed(int sellIn){

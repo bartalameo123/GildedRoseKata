@@ -8,27 +8,21 @@ public interface GeneralItem {
     int MIN_QUALITY = 0;
 
     static GeneralItem getItem(Item item) {
-        if (isAgedBrieItem(item)) {
-            return new AgedBrieItem(item);
+        switch (item.name){
+            case "Aged Brie":
+                return new AgedBrieItem(item);
+            case "Sulfuras, Hand of Ragnaros":
+                return new SulfurItem(item);
+            case "Backstage passes to a TAFKAL80ETC concert":
+                return new BackStageItem(item);
+            case "Conjured":
+                return new ConjuredItem(item);
+            default:
+                return new StandardItem(item);
         }
-        return new StandardItem(item);
+
     }
 
-    public void updateQuality();
+    void updateQuality();
 
-    static boolean isBackstageItem(Item item){
-        return item.name == "Backstage passes to a TAFKAL80ETC concert";
-    }
-
-    static boolean isSulfurItem(Item item){
-        return item.name == "Sulfuras, Hand of Ragnaros";
-    }
-
-    static boolean isAgedBrieItem(Item item){
-        return item.name == "Aged Brie";
-    }
-
-    static boolean isStandardItem(Item item){
-        return item.name == "Aged Brie";
-    }
 }

@@ -7,14 +7,12 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 @Data
 @AllArgsConstructor
-@Document(indexName = "GildedRose")
+@Document(indexName = "gildedroseproperties")
 public class ItemProperties {
 
-    public static final int MIN_QUALITY = 0;
-    public static final int MAX_QUALITY = 50;
-
     @Id
-    public String name;
-    private int qualityDelta;
+    private String name;
+    private int standardQualityDelta;
+    private int daysIncreaseChange;
 
 }
