@@ -3,6 +3,8 @@ package com.gildedrose;
 import com.gildedrose.entity.GeneralItem;
 import com.gildedrose.entity.Item;
 
+import java.util.Arrays;
+
 public class GildedRose {
     Item[] items;
 
@@ -12,10 +14,7 @@ public class GildedRose {
 
     public void updateQuality() {
 
-        for (Item item : items) {
-            GeneralItem.getItem(item).updateQuality();
-
-        }
+        Arrays.asList(items).stream().map(item -> GeneralItem.getItem(item)).forEach(GeneralItem::updateQuality);
 
     }
 
