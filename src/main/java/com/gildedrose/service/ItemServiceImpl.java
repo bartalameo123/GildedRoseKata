@@ -18,17 +18,11 @@ import static com.gildedrose.service.exceptions.ItemNotFoundException.ITEM_NOT_F
 public class ItemServiceImpl implements ItemService{
 
     private final ItemRepository itemRepository;
-    private final Quality quality;
-    private final SellTime sellTime;
 
     public ItemServiceImpl(
-            ItemRepository itemRepository,
-            Quality quality,
-            SellTime sellTime
+            ItemRepository itemRepository
     ){
         this.itemRepository = itemRepository;
-        this.quality = quality;
-        this.sellTime = sellTime;
     }
 
     public void updateItems() {

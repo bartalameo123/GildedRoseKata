@@ -9,6 +9,12 @@ public class GeneralItem extends Item {
 
     private Item item;
 
+/*    static GeneralItem getQualifiedItem(Item item) {
+        if(isBackstageItem(item)){
+            return new BackStageItem(item);
+        }
+    }*/
+
     public GeneralItem(Item item) {
         super(item.name, item.sellIn, item.quality);
     }
@@ -97,5 +103,21 @@ public class GeneralItem extends Item {
             return new BackStageItem(item);
         }
         return null;
+    }
+
+    private static boolean isBackstageItem(Item item){
+        return item.name == "Backstage passes to a TAFKAL80ETC concert";
+    }
+
+    private boolean isSulfurItem(Item item){
+        return item.name == "Sulfuras, Hand of Ragnaros";
+    }
+
+    private boolean isAgedBrieItem(Item item){
+        return item.name == "Aged Brie";
+    }
+
+    private boolean isStandardItem(Item item){
+        return item.name == "Aged Brie";
     }
 }

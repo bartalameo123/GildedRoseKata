@@ -1,5 +1,6 @@
 package com.gildedrose;
 
+import com.gildedrose.entity.AgedBrieItem;
 import com.gildedrose.entity.BackStageItem;
 import com.gildedrose.entity.GeneralItem;
 import com.gildedrose.entity.Item;
@@ -31,7 +32,9 @@ public class GildedRose {
                 continue;
             }
             if (isAgedBrieItem(item)) {
-                updateAgedBrieQuality(item);
+                AgedBrieItem agedBrieItem = new AgedBrieItem(item);
+                agedBrieItem.updateQuality();
+                //updateAgedBrieQuality(item);
                 continue;
             }
             if (isBackstageItem(item)) {
@@ -109,13 +112,6 @@ public class GildedRose {
 
     private void decreaseSellTime(Item item){
         item.sellIn--;
-    }
-
-    private BackStageItem getQualifiedItem(Item item){
-        if(item.name=="Backstage passes to a TAFKAL80ETC concert"){
-            return new BackStageItem(item);
-        }
-        return null;
     }
 
     private boolean isBackstageItem(Item item){
