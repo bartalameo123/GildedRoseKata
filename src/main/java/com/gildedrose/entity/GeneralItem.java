@@ -1,13 +1,11 @@
 package com.gildedrose.entity;
 
-import java.util.Arrays;
-
 public interface GeneralItem {
 
     int MAX_QUALITY = 50;
     int MIN_QUALITY = 0;
 
-    static GeneralItem getItem(Item item) {
+    static GeneralItem classifyItem(Item item) {
         switch (item.name){
             case "Aged Brie":
                 return new AgedBrieItem(item);
@@ -21,6 +19,30 @@ public interface GeneralItem {
                 return new StandardItem(item);
         }
 
+    }
+
+    static boolean itemQualityCanBeChanged(Item item){
+        return item.name == "Sulfuras, Hand of Ragnaros" ? false : MIN_QUALITY < item.quality && item.quality < MAX_QUALITY;
+    }
+
+    static void increaseQuality(Item item){
+        if(itemQualityCanBeChanged(item)) {
+            item.quality++;
+        }
+    }
+
+    static void decreaseQuality(Item item){
+        if(itemQualityCanBeChanged(item)) {
+            item.quality--;
+        }
+    }
+
+    static void decreaseSellTime(Item item){
+        item.sellIn--;
+    }
+
+    static boolean itemSellDatePassed(Item item){
+        return item.sellIn < 0;
     }
 
     void updateQuality();

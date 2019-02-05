@@ -9,29 +9,13 @@ public class StandardItem implements GeneralItem{
     }
 
     public void updateQuality() {
-        decreseQuality(item);
 
-        decreaseSellTime(item);
-
-        if (sellDayHasPassed(item.sellIn)) {
-            decreseQuality(item);
+        GeneralItem.decreaseQuality(item);
+        GeneralItem.decreaseSellTime(item);
+        if(GeneralItem.itemSellDatePassed(item)){
+            GeneralItem.decreaseQuality(item);
         }
+
     }
 
-    private boolean itemQualityIsNotMinimal(int quality){
-        return quality > GeneralItem.MIN_QUALITY;
-    }
-
-    private boolean sellDayHasPassed(int sellIn){
-        return sellIn < 0;
-    }
-
-    private void decreseQuality(Item item){
-        if (itemQualityIsNotMinimal(item.quality))
-            item.quality--;
-    }
-
-    private void decreaseSellTime(Item item){
-        item.sellIn--;
-    }
 }

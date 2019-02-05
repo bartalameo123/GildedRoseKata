@@ -3,6 +3,7 @@ package com.gildedrose.controller;
 import com.gildedrose.entity.Item;
 import com.gildedrose.service.ItemService;
 import com.gildedrose.service.ItemServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,12 +19,9 @@ public class ItemController {
 
     private final ItemServiceImpl itemServiceImpl;
 
+    @Autowired
     public ItemController(ItemServiceImpl itemServiceImpl){
         this.itemServiceImpl = itemServiceImpl;
-    }
-
-    public List<Item> getAllItems(){
-        return itemServiceImpl.findAll();
     }
 
     @RequestMapping(value = "/getAllItemsList/", method = RequestMethod.GET)

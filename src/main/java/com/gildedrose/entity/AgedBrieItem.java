@@ -1,5 +1,9 @@
 package com.gildedrose.entity;
 
+import static com.gildedrose.entity.GeneralItem.increaseQuality;
+import static com.gildedrose.entity.GeneralItem.itemSellDatePassed;
+import static com.gildedrose.entity.GeneralItem.decreaseSellTime;
+
 public class AgedBrieItem implements GeneralItem{
 
     private Item item;
@@ -11,26 +15,9 @@ public class AgedBrieItem implements GeneralItem{
     public void updateQuality() {
         increaseQuality(item);
         decreaseSellTime(item);
-        if (sellDayHasPassed(item.sellIn)) {
+        if (itemSellDatePassed(item)) {
             increaseQuality(item);
         }
-    }
-
-    public boolean itemQualityIsNotMaximal(int quality){
-        return quality < GeneralItem.MAX_QUALITY;
-    }
-
-    private boolean sellDayHasPassed(int sellIn){
-        return sellIn < 0;
-    }
-
-    private void increaseQuality(Item item){
-        if (itemQualityIsNotMaximal(item.quality))
-            item.quality++;
-    }
-
-    private void decreaseSellTime(Item item){
-        item.sellIn--;
     }
 
 }

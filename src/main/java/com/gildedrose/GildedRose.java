@@ -14,7 +14,7 @@ public class GildedRose {
 
     public void updateQuality() {
 
-        Arrays.asList(items).stream().map(item -> GeneralItem.getItem(item)).forEach(GeneralItem::updateQuality);
+        Arrays.asList(items).stream().map(item -> GeneralItem.classifyItem(item)).forEach(GeneralItem::updateQuality);
 
     }
 

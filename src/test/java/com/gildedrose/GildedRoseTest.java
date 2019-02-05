@@ -58,7 +58,7 @@ public class GildedRoseTest {
     public void testQualityIsBetween0And50() {
         Item[] items = new Item[]{
                 new Item("test item", 100, 2),
-                new Item("Conjured Mana Cake", 200, 3),
+                new Item("Conjured", 200, 3),
                 new Item("Backstage passes to a TAFKAL80ETC concert", 16, 3),
                 new Item("Elixir of the Mongoose", 5, 4),
                 new Item("Aged Brie", 50, 4)};
@@ -73,6 +73,16 @@ public class GildedRoseTest {
         }
 
     }
+
+    @Test
+    public void testBackStageExpired() {
+        Item[] items = new Item[]{
+                new Item("Backstage passes to a TAFKAL80ETC concert", 0, 3)};
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals(0, app.items[0].quality);
+    }
+
 
     @Test
     public void testSulfurNeverChanges() {
@@ -150,7 +160,7 @@ public class GildedRoseTest {
     public void testConjuredQualityDegradesTwiceAsFast() {
         Item[] items = new Item[] {
                 new Item("test item", 1, 16) ,
-                new Item("Conjured Mana Cake", 1,18)};
+                new Item("Conjured", 1,18)};
         GildedRose app = new GildedRose(items);
         int qualityDeltaBeforeDefault = items[0].quality;
         int qualityDeltaBeforeConjured = items[1].quality;
@@ -158,14 +168,14 @@ public class GildedRoseTest {
         qualityDeltaBeforeDefault -= app.items[0].quality;
         qualityDeltaBeforeConjured -= app.items[1].quality;
         assertEquals(1, qualityDeltaBeforeDefault);
-        assertNotEquals(2, qualityDeltaBeforeConjured);
+        assertEquals(2, qualityDeltaBeforeConjured);
         int qualityDeltaAfterDefault = app.items[0].quality;
         int qualityDeltaAfterConjured = app.items[1].quality;
         app.updateQuality();
         qualityDeltaAfterDefault -= app.items[0].quality;
         qualityDeltaAfterConjured -= app.items[1].quality;
         assertEquals(2, qualityDeltaAfterDefault/qualityDeltaBeforeDefault);
-        assertNotEquals(4, qualityDeltaAfterConjured/qualityDeltaBeforeConjured);
+        assertEquals(2, qualityDeltaAfterConjured/qualityDeltaBeforeConjured);
     }
 
 

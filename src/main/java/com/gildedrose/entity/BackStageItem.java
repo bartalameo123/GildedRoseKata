@@ -1,8 +1,11 @@
 package com.gildedrose.entity;
 
-public class BackStageItem implements GeneralItem {
+import static com.gildedrose.entity.GeneralItem.increaseQuality;
+import static com.gildedrose.entity.GeneralItem.itemSellDatePassed;
+import static com.gildedrose.entity.GeneralItem.decreaseSellTime;
 
-    public static final int MAX_QUALITY = 50;
+public class BackStageItem implements BackStage {
+
     private Item item;
 
     public BackStageItem(Item item){
@@ -12,42 +15,29 @@ public class BackStageItem implements GeneralItem {
     public void updateQuality(){
 
         increaseQuality(item);
-        if (backstageQualityDoubles(item.sellIn)) {
+
+        if (increaseQualitySecondTime(item)) {
             increaseQuality(item);
         }
 
-        if (backstageQualityTriples(item.sellIn)) {
+        if (increaseQualityThirdTime(item)) {
             increaseQuality(item);
         }
+
         decreaseSellTime(item);
-        if (sellDayHasPassed(item.sellIn)) {
+
+        if (itemSellDatePassed(item)) {
             item.quality = 0;
         }
     }
 
-    private boolean backstageQualityDoubles(int sellIn){
-        return sellIn < 11;
+    @Override
+    public boolean increaseQualitySecondTime(Item item) {
+        return item.sellIn <= BackStage.SECOND_LEVEL ;
     }
 
-    public boolean itemQualityIsNotMaximal(int quality){
-        return quality < GeneralItem.MAX_QUALITY;
+    @Override
+    public boolean increaseQualityThirdTime(Item item) {
+        return item.sellIn <= BackStage.THIRD_LEVEL;
     }
-
-    private boolean sellDayHasPassed(int sellIn){
-        return sellIn < 0;
-    }
-
-    private boolean backstageQualityTriples(int sellIn){
-        return sellIn < 6;
-    }
-
-    private void increaseQuality(Item item){
-        if (itemQualityIsNotMaximal(item.quality))
-            item.quality++;
-    }
-
-    private void decreaseSellTime(Item item){
-        item.sellIn--;
-    }
-
 }
