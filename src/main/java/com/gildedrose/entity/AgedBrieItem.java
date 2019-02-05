@@ -1,8 +1,7 @@
 package com.gildedrose.entity;
 
-public class AgedBrieItem {
+public class AgedBrieItem implements GeneralItem{
 
-    public static final int MIN_QUALITY = 0;
     public static final int MAX_QUALITY = 50;
 
     private Item item;
@@ -21,10 +20,6 @@ public class AgedBrieItem {
 
     public boolean itemQualityIsNotMaximal(int quality){
         return quality < MAX_QUALITY;
-    }
-
-    private boolean itemQualityIsNotMinimal(int quality){
-        return quality > MIN_QUALITY;
     }
 
     private boolean sellDayHasPassed(int sellIn){

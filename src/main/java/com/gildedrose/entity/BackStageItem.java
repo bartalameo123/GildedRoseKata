@@ -1,30 +1,53 @@
 package com.gildedrose.entity;
 
-public class BackStageItem extends Item{
-    private Item item;
-    public BackStageItem(Item item){
-        super(item.name, item.sellIn, item.quality);
-    }
+public class BackStageItem {
 
-    public static BackStageItem gettQualifiedItem(Item item){
-        return new BackStageItem(item);
+    public static final int MAX_QUALITY = 50;
+    private Item item;
+
+    public BackStageItem(Item item){
+        this.item = item;
     }
 
     public void updateQuality(){
 
-        if(this.sellIn>0) {
-            if (this.sellIn < 6) {
-                this.quality = this.quality + 3;
-            } else if (this.sellIn < 11) {
-                this.quality = this.quality + 2;
-            } else if (this.sellIn < 50) {
-                this.quality = this.quality + 1;
-            }
+        increaseQuality(item);
+        if (backstageQualityDoubles(item.sellIn)) {
+            increaseQuality(item);
         }
-        this.sellIn = this.sellIn--;
-        if(sellIn < 0) {
-            this.quality = 0;
+
+        if (backstageQualityTriples(item.sellIn)) {
+            increaseQuality(item);
+        }
+        decreaseSellTime(item);
+        if (sellDayHasPassed(item.sellIn)) {
+            item.quality = 0;
         }
     }
-    //custom backstage methods
+
+    private boolean backstageQualityDoubles(int sellIn){
+        return sellIn < 11;
+    }
+
+    public boolean itemQualityIsNotMaximal(int quality){
+        return quality < MAX_QUALITY;
+    }
+
+    private boolean sellDayHasPassed(int sellIn){
+        return sellIn < 0;
+    }
+
+    private boolean backstageQualityTriples(int sellIn){
+        return sellIn < 6;
+    }
+
+    private void increaseQuality(Item item){
+        if (itemQualityIsNotMaximal(item.quality))
+            item.quality++;
+    }
+
+    private void decreaseSellTime(Item item){
+        item.sellIn--;
+    }
+
 }

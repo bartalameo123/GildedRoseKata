@@ -5,5 +5,5 @@ spring:
 
 elasticsearch:
   host: localhost
-  port: 9200
+  port: 9300
   clustername: elasticsearch

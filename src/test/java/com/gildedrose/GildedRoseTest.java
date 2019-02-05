@@ -90,7 +90,7 @@ public class GildedRoseTest {
     @Test
     public void testAgedBrieQualityIncreases() {
         Item[] items = new Item[]{
-                new Item("Sulfuras, Hand of Ragnaros", 100, 2)};
+                new Item("Aged Brie", 100, 2)};
         GildedRose app = new GildedRose(items);
         int quality;
         for( int i = 0; i<1000; i++){
@@ -104,7 +104,7 @@ public class GildedRoseTest {
     @Test
     public void testBackStageQualityIncreases() {
         Item[] items = new Item[]{
-                new Item("Sulfuras, Hand of Ragnaros", 100, 2)};
+                new Item("Backstage passes to a TAFKAL80ETC concert", 100, 2)};
         GildedRose app = new GildedRose(items);
         int quality;
         for( int i = 0; i<100; i++){
