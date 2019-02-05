@@ -1,15 +1,15 @@
 package com.gildedrose.service;
 
-import com.gildedrose.GildedRose;
+import com.gildedrose.entity.GeneralItem;
 import com.gildedrose.entity.Item;
 import com.gildedrose.repository.ItemRepository;
 import com.gildedrose.service.exceptions.ItemNotFoundException;
-import com.gildedrose.usecase.Quality;
-import com.gildedrose.usecase.SellTime;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static com.gildedrose.service.exceptions.ItemNotFoundException.ITEM_NOT_FOUND;
 
@@ -26,9 +26,23 @@ public class ItemServiceImpl implements ItemService{
     }
 
     public void updateItems() {
-        List<Item> items = itemRepository.findAll();
+
+        CompletableFuture<List<Item>> items = CompletableFuture.supplyAsync(() -> itemRepository.findAll());
+
+        CompletableFuture<Void> itemsProcess = items.thenRunAsync(() -> {
+            try{
+                items.get().stream().map(item -> GeneralItem.classifyItem(item)).forEach(GeneralItem::updateQuality);
+            } catch (InterruptedException ie){
+                log.error("Execution was interrupted. Error message: {}", ie.getMessage());
+            } catch (ExecutionException ee){
+                log.error("Execution has failed. Error message: {}", ee.getMessage());
+            }
+
+        });
+
+        /*List<Item> items = itemRepository.findAll();
         GildedRose app = new GildedRose(items.toArray(new Item[items.size()]));
-        app.updateQuality();
+        app.updateQuality();*/
     }
 
     public void save(Item item) {

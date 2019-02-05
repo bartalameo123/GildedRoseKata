@@ -1,6 +1,5 @@
 package com.gildedrose.entity;
 
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -8,7 +7,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 @Document(indexName = "gildedrose")
 public class Item {
 
-    @Id
     public String name;
 
     public int sellIn;
