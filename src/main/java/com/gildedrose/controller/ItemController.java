@@ -1,6 +1,7 @@
 package com.gildedrose.controller;
 
 import com.gildedrose.entity.Item;
+import com.gildedrose.repository.ItemRepository;
 import com.gildedrose.service.ItemServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +20,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Controller
 @Slf4j
 public class ItemController {
-
-    private final ItemServiceImpl itemServiceImpl;
+    @Autowired
+    private ItemRepository itemRepository;
+    private ItemServiceImpl itemService;
 
     private AtomicInteger counter;
 
-    @Autowired
-    public ItemController(ItemServiceImpl itemServiceImpl){
-        this.itemServiceImpl = itemServiceImpl;
-    }
+   // @Autowired
+   // public ItemController(ItemRepository itemRepository){
+   //     this.itemRepository = itemRepository;
+   // }
 
-    @RequestMapping(value = "/getAllItemsList/", method = RequestMethod.GET)
+    @RequestMapping(value = "/Item/getAllItemsList", method = RequestMethod.GET)
     public DeferredResult<ResponseEntity<List<Item>>> getAllItemsList() {
 
         DeferredResult<ResponseEntity<List<Item>>> result = new DeferredResult<>();
@@ -38,7 +40,7 @@ public class ItemController {
             try {
                 result.setResult(ResponseEntity.ok()
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body(itemServiceImpl.findAll()));
+                        .body(itemRepository.findAll()));
             } catch (Exception e) {
                 log.error(e.getMessage());
                 result.setResult(ResponseEntity.notFound().build());
@@ -62,9 +64,15 @@ public class ItemController {
 
     }
 
+    @RequestMapping(value = "/Item/getAllItemsSimple", method = RequestMethod.GET)
+    public ResponseEntity<List<Item>> getAllItemsSimple() {
+        return new ResponseEntity<>(itemRepository.findAll(), HttpStatus.OK);
+
+    }
+
     @Scheduled(cron = "0 0 23 * * ?")
     public void updateQuality() {
-        itemServiceImpl.updateItems();
+        itemService.updateItems();
     }
 
 }

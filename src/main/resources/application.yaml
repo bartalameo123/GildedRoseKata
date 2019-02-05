@@ -1,7 +1,11 @@
 spring:
   application:
     name: GildedRoseKata
-
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: gildedrose
 
 elasticsearch:
   host: localhost

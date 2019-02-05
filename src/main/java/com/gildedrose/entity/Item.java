@@ -1,11 +1,13 @@
 package com.gildedrose.entity;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 
-@Document(indexName = "gildedrose")
 public class Item {
+
+    @Id
+    public ObjectId _id;
 
     public String name;
 

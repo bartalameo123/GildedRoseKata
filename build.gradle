@@ -3,9 +3,6 @@ buildscript {
         springBootVersion = "2.0.1.RELEASE"
     }
     repositories {
-        maven {
-            url 'http://maven.int.bite.lt:8081/artifactory/plugins-release'
-        }
         mavenCentral()
     }
     dependencies {
@@ -24,14 +21,12 @@ sourceCompatibility = jdkVersion
 targetCompatibility = jdkVersion
 
 repositories {
-    maven {
-        url 'http://maven.int.bite.lt:8081/artifactory/libs-release'
-    }
     mavenCentral()
 }
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile('org.springframework.boot:spring-boot-starter-data-mongodb')
     compile('org.springframework.data:spring-data-elasticsearch:3.0.8.RELEASE')
     compile group: 'org.elasticsearch.client', name: 'transport', version: '5.5.3'
     compile('org.elasticsearch:elasticsearch:5.5.3')

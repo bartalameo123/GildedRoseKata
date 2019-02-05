@@ -18,9 +18,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
-@Configuration
-@EnableElasticsearchRepositories(basePackages = "com.gildedrose.repository")
-@ComponentScan(basePackages = { "com.gildedrose.service" })
+//@Configuration
+//@EnableElasticsearchRepositories(basePackages = "com.gildedrose.repository")
+//@ComponentScan(basePackages = { "com.gildedrose.service" })
 public class ElasticsearchConfig {
 
     @Value("${elasticsearch.host}")
@@ -35,7 +35,7 @@ public class ElasticsearchConfig {
  //   @Value("${elasticsearch.home}")
  //   private String esHome;
 
-    @Bean
+   // @Bean
     public Client client() {
         TransportClient client = null;
         try {
@@ -50,7 +50,7 @@ public class ElasticsearchConfig {
         return client;
     }
 
-    @Bean
+    //@Bean
     public ElasticsearchOperations elasticsearchTemplate() throws Exception {
         return new ElasticsearchTemplate(client());
     }
